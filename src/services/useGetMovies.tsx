@@ -19,6 +19,7 @@ export const useGetMovies = () => {
     const [trending, setTrending] = useState<ResponseData | null>(null);
     const [topRated, setTopRated] = useState<ResponseData | null>(null);
     const [popular, setPopular] = useState<ResponseData | null>(null);
+    const [allMovies, setAllMovies] = useState<ResponseData | null>(null);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -50,9 +51,17 @@ export const useGetMovies = () => {
                     imdbID: val.imdbID
                 }));
 
+                const allMovies = res.data.map((val: Response) => ({
+                    poster: val.Poster,
+                    title: val.Title,
+                    year: val.Year,
+                    imdbID: val.imdbID
+                }))
+
                 setTopRated(topRated);
                 setPopular(populars)
                 setTrending(trendings);
+                setAllMovies(allMovies);
                 setLoading(false);
 
             } catch (error) {
@@ -66,6 +75,7 @@ export const useGetMovies = () => {
 
 
     return {
+        allMovies,
         topRated,
         popular,
         trending,
