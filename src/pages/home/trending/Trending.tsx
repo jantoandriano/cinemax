@@ -12,7 +12,7 @@ const Trending: React.FC<Props> = ({data, loading}) => {
   return (
     <div className="carouselSection">
       <ContentWrapper>
-        <span className="carouselTitle">Trending</span>
+        <span className="carouselTitle">Top Movies</span>
       </ContentWrapper>
       <CarouselV2 data={data} loading={loading} />
     </div>

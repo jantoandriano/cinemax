@@ -8,6 +8,12 @@ import SearchResult from './pages/searchResult/SearchResult';
 import Explore from './pages/explore/Explore';
 import PageNotFound from './pages/404/PageNotFound';
 import { useGetAboutUs } from './services/useGetAboutUs';
+import Login from './pages/login/Login';
+import Register from './pages/register/Register';
+import Details from './pages/details/Details';
+import TvShows from './pages/tvshows/TvShows';
+import MyList from './pages/mylist/MyList';
+import About from './pages/about/About';
 
 function App() {
   const { data } = useGetAboutUs()
@@ -19,9 +25,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search/:query" element={<SearchResult />} />
         <Route path="/movies" element={<Explore />} />
+        <Route path="/tvshows" element={<TvShows />} />
+        <Route path="/mylist" element={<MyList />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/movies/:id" element={<Details />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      <Footer data={data} />
+      {/* <Footer data={data} /> */}
     </BrowserRouter>
   );
 }

@@ -8,6 +8,7 @@ import ContentWrapper from '../contentWrapper/ContentWrapper';
 import logo from '../../assets/movix-logo.svg';
 
 const Header = () => {
+  const [search, setSearch] = useState('')
   const [show, setShow] = useState('top');
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -42,6 +43,15 @@ const Header = () => {
     setMobileMenu(true);
   };
 
+  const onSearch = (event) => {
+    const search = event.target.value
+    setSearch(search);
+  }
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <header className={`header ${mobileMenu ? 'mobileView' : ''} ${show}`}>
       <ContentWrapper>
@@ -49,9 +59,19 @@ const Header = () => {
           <img src={logo} alt="" width="80" height="30" />
         </div>
 
+
         <ul className="menuItems">
-              <li className="menuItem" onClick={()=>{navigate("movies")}}>Movies</li>
-            </ul>
+          <li className="menuItem" onClick={() => { navigate("movies") }}>Movies</li>
+          <li className="menuItem" onClick={() => { navigate("tvshows") }}>Tv Shows</li>
+          <li className="menuItem" onClick={() => { navigate("mylist") }}>My List</li>
+          <li className="menuItem" onClick={() => { navigate("login") }}>Login</li>
+          <li className="menuItem" onClick={() => { navigate("about") }}>About</li>
+          <li>
+            <form onSubmit={onSubmit}>
+              <input type='text' value={search} placeholder='Search' onChange={onSearch} />
+            </form>
+          </li>
+        </ul>
 
         <div className="mobileMenuItems">
           {mobileMenu ? (

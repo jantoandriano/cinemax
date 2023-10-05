@@ -9,7 +9,7 @@ export const useGetBanner = () => {
     
     useEffect(() => {
     if (trending) {
-        const bg = trending[Math.floor(Math.random() * 10)].poster; 
+        const bg = trending[Math.floor(Math.random() * 10)]?.poster; 
         setBanner(bg);
         
     }

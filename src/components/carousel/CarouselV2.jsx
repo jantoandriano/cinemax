@@ -6,9 +6,11 @@ import Img from '../lazyLoadImage/img';
 import PosterFallback from '../../assets/no-poster.png';
 
 import './style.scss';
+import { useNavigate } from 'react-router-dom';
 
 const CarouselV2 = ({ data, loading }) => {
   const carouselContainer = useRef();
+  const navigate = useNavigate();
 
   const navigation = (dir) => {
     const container = carouselContainer.current;
@@ -24,10 +26,13 @@ const CarouselV2 = ({ data, loading }) => {
     });
   };
 
+  const onMovieDetail = (id) => {
+    navigate(`/movies/${id}`)
+  }
+
   return (
     <div className="carousel">
       <ContentWrapper>
-        {/* {title && <div className="carouselTitle">{title}</div>} */}
         <BsFillArrowLeftCircleFill
           className="carouselLeftNav arrow"
           onClick={() => navigation('left')}
@@ -44,6 +49,7 @@ const CarouselV2 = ({ data, loading }) => {
                 <div
                   className="carouselItem"
                   key={item.imdbID}
+                  onClick={() => onMovieDetail(item.imdbID)}
                 >
                   <div className="posterBlock">
                     <Img src={posterUrl} />

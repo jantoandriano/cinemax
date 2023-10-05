@@ -1,18 +1,69 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import MovieApi from "../apis/MovieApi";
+import axios from "axios";
 
-export const homeSlice = createSlice({
-  name: 'home',
-  initialState: {
-    url: {},
-    genres: {}
-  },
-  reducers: {
-    getApiConfiguration: (state, action) => {
-      state.url = action.payload;
-    },
+export const fetchAsyncMovies = createAsyncThunk(
+  'movies/fetchAsyncMovies',
+  async () => {
+    const response = await axios.get('http://localhost:3001/xyzflix/listmovie');
+    return response.data;
   }
-});
+)
 
-export const { getApiConfiguration, getGenres } = homeSlice.actions;
+export const fetchAsyncShows = createAsyncThunk(
+  'movies/fetchAsyncShows',
+  async () => {
+    const response = await MovieApi.get(`?apikey=1b2a0b1d&type=series`);
+    console.log(response);
+    return response.data;
+  }
+)
 
-export default homeSlice.reducer;
+export const fetchAsyncItemById = createAsyncThunk(
+  'movies/fetchAsyncItemById',
+  async (id) => {
+    const response = await MovieApi.get(`?apikey=1b2a0b1d&i=${id}&Plot=full`);
+    return response.data;
+  }
+)
+
+const initialState = {
+  movies: [],
+  shows: [],
+  selectedItem: {},
+  loading: false
+}
+
+const moviesSlice = createSlice({
+  name: 'movies',
+  initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAsyncMovies.fulfilled, (state, { payload }) => {
+        console.log("Fetched Successfully!");
+        return { ...state, movies: payload };
+      })
+      .addCase(fetchAsyncMovies.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAsyncMovies.rejected, () => {
+        console.log('rejected');
+      })
+      .addCase(fetchAsyncShows.fulfilled, (state, { payload }) => {
+        console.log("Fetched Successfully!");
+        return { ...state, loading: false, shows: payload };
+      })
+      .addCase(fetchAsyncShows.rejected, () => {
+        console.log('rejected');
+      })
+      .addCase(fetchAsyncItemById.fulfilled, (state, { payload }) => {
+        console.log("Fetched Successfully!");
+        return { ...state, loading: false, selectedItem: payload };
+      })
+  }
+})
+
+export const getAllMovies = (state) => state.movies.movies;
+export const getAllShows = (state) => state.movies.shows;
+export const getMovieDetail = (state) => state.movies.selectedItem;
+export default moviesSlice.reducer;
