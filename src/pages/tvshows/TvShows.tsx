@@ -4,14 +4,12 @@ import './style.scss';
 import ContentWrapper from '../../components/contentWrapper/ContentWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
 import Spinner from '../../components/spinner/Spinner';
-import { useGetMovies } from '../../services/useGetMovies';
 import { useGetTvShows } from '../../services/useGetTvShows';
+import { useParams } from 'react-router-dom';
 
 const TvShows = () => {
-    const { allMovies, loading } = useGetMovies();
-    const { allshows } = useGetTvShows();
-    console.log("---", allshows);
-
+    const { q } = useParams();
+    const { allshows } = useGetTvShows(q ? q : 'spiderman');      
 
     return (
         <div className="explorePage">
@@ -21,12 +19,12 @@ const TvShows = () => {
                         Tv Shows
                     </div>
                 </div>
-                {loading && <Spinner initial={true} />}
-                {!loading && (
+                {allshows?.length === 0 && <Spinner initial={true} />}
+                {allshows?.length > 0 && (
                     <>
-                        {allMovies?.length > 0 ? (
+                        {allshows?.length > 0 ? (
                             <div className='content'>
-                                {allMovies?.map((item, index) => (
+                                {allshows?.map((item, index) => (
                                     <MovieCard key={index} data={item} pathname="tvshows" />
                                 ))}
                             </div>

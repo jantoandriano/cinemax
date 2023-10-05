@@ -1,32 +1,27 @@
 import { useEffect, useState } from "react";
 import { fetchAsyncShows, getAllShows } from '../store/homeSlice'
 import { useDispatch, useSelector } from "react-redux";
-export const useGetTvShows = () => {
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
+export const useGetTvShows = (query) => {
     const dispatch = useDispatch();
-    const allshows = useSelector(getAllShows);
 
     useEffect(() => {
-        const getData = async () => {
-            setLoading(true);
-            try {
-                dispatch(fetchAsyncShows());
-                setLoading(false)
-            } catch (error) {
-                setError(error)
-                setLoading(false);
-            }
-        };
-        getData();
+        dispatch(fetchAsyncShows(query));
+
     }, []);
+
+    const res = useSelector(getAllShows);    
+
+
+    const allshows = res && res?.Search?.map(val => ({
+        poster: val.Poster,
+        title: val.Title,
+        year: val.Year,
+        imdbID: val.imdbID
+    }))
 
     return {
         allshows,
-        loading,
-        error,
     }
 
 

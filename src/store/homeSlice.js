@@ -12,9 +12,9 @@ export const fetchAsyncMovies = createAsyncThunk(
 
 export const fetchAsyncShows = createAsyncThunk(
   'movies/fetchAsyncShows',
-  async () => {
-    const response = await MovieApi.get(`?apikey=1b2a0b1d&type=series`);
-    console.log(response);
+  async (search) => {
+    console.log(search);
+    const response = await MovieApi.get(`?apikey=1b2a0b1d&s=${search}`);
     return response.data;
   }
 )
@@ -40,7 +40,6 @@ const moviesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAsyncMovies.fulfilled, (state, { payload }) => {
-        console.log("Fetched Successfully!");
         return { ...state, movies: payload };
       })
       .addCase(fetchAsyncMovies.pending, (state) => {
@@ -50,14 +49,12 @@ const moviesSlice = createSlice({
         console.log('rejected');
       })
       .addCase(fetchAsyncShows.fulfilled, (state, { payload }) => {
-        console.log("Fetched Successfully!");
-        return { ...state, loading: false, shows: payload };
+        return { ...state, shows: payload };
       })
       .addCase(fetchAsyncShows.rejected, () => {
         console.log('rejected');
       })
       .addCase(fetchAsyncItemById.fulfilled, (state, { payload }) => {
-        console.log("Fetched Successfully!");
         return { ...state, loading: false, selectedItem: payload };
       })
   }

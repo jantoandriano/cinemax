@@ -7,7 +7,6 @@ import Home from './pages/home/Home';
 import SearchResult from './pages/searchResult/SearchResult';
 import Explore from './pages/explore/Explore';
 import PageNotFound from './pages/404/PageNotFound';
-import { useGetAboutUs } from './services/useGetAboutUs';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import Details from './pages/details/Details';
@@ -16,15 +15,14 @@ import MyList from './pages/mylist/MyList';
 import About from './pages/about/About';
 
 function App() {
-  const { data } = useGetAboutUs()
 
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search/:query" element={<SearchResult />} />
         <Route path="/movies" element={<Explore />} />
+        <Route path="/tvshows/:q" element={<TvShows />} />
         <Route path="/tvshows" element={<TvShows />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/login" element={<Login />} />
